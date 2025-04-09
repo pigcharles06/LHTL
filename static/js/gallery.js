@@ -293,7 +293,16 @@ async function handleWorkUpload(event) {
             uploadStatusElement.classList.remove('text-red-600', 'text-blue-600');
             uploadStatusElement.classList.add('text-green-600');
             if (uploadForm) uploadForm.reset(); // Clear form fields
-            await loadAndRenderWorks(); // Refresh the gallery to show the new work
+            
+            // --- 更新畫廊和幻燈片 ---
+            await loadAndRenderWorks(); // 1. 重新載入並渲染畫廊卡片 (這會更新 currentWorksData)
+            if (typeof initializeSlideshow === 'function') {
+                 console.log("Upload successful, re-initializing slideshow..."); // 添加日誌方便除錯
+                 initializeSlideshow(); // 2. 使用更新後的 currentWorksData 重新初始化幻燈片
+            } else {
+                console.warn("initializeSlideshow function not found after upload.");
+            }
+            // --- ---
             // Hide success message after a few seconds
             setTimeout(() => {
                  if (uploadStatusElement && uploadStatusElement.classList.contains('text-green-600')) {
