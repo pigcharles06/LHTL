@@ -1,4 +1,4 @@
-// js/utils.js
+// static/js/utils.js
 
 /**
  * Handles image loading errors by replacing the source with a placeholder SVG.
@@ -18,7 +18,10 @@ function handleImageError(imgElement, errorText = '圖片載入失敗') {
                 ${escapeHTML(errorText)}
             </text>
         </svg>`;
-    imgElement.src = `data:image/svg+xml,${encodeURIComponent(placeholderSvg)}`;
+    // Check if imgElement still exists in DOM before setting src
+     if (imgElement.parentNode) {
+        imgElement.src = `data:image/svg+xml,${encodeURIComponent(placeholderSvg)}`;
+     }
     imgElement.alt = errorText;
 }
 
@@ -37,6 +40,3 @@ function escapeHTML(str) {
         "'": '&#39;' // Use HTML entity for single quote
     }[tag] || tag));
 }
-
-// If you plan to use ES Modules in the future, you would add:
-// export { handleImageError, escapeHTML };

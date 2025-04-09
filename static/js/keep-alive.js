@@ -1,4 +1,4 @@
-// js/keep-alive.js
+// static/js/keep-alive.js
 
 /**
  * Sends a background request to the server to prevent Render free tier inactivity timeout.
@@ -22,12 +22,13 @@ function keepAwake() {
 
 /**
  * Starts the keep-alive timer.
- * @param {number} intervalMs - The interval in milliseconds (e.g., 10 minutes).
+ * @param {number} [intervalMs=600000] - The interval in milliseconds (default 10 minutes).
  */
 function startKeepAliveTimer(intervalMs = 10 * 60 * 1000) {
-    if (intervalMs < 60000) { // Prevent excessively frequent pings
-        console.warn("Keep-alive interval is very short (< 1 min).");
-        intervalMs = 60000;
+    const minInterval = 5 * 60 * 1000; // Minimum 5 minutes to be safe
+    if (intervalMs < minInterval) {
+        console.warn(`Keep-alive interval too short, setting to ${minInterval / 60000} minutes.`);
+        intervalMs = minInterval;
     }
     // Run once immediately on load
     keepAwake();
@@ -35,6 +36,3 @@ function startKeepAliveTimer(intervalMs = 10 * 60 * 1000) {
     setInterval(keepAwake, intervalMs);
     console.log(`已設定每 ${intervalMs / 60000} 分鐘自動發送 keep-alive 請求。`);
 }
-
-// Export function if using modules
-// export { startKeepAliveTimer };

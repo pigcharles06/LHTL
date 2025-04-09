@@ -1,163 +1,197 @@
-// js/main.js
-// This script should be loaded last or use 'defer'. It coordinates other scripts.
+// static/js/main.js
+// This script ties everything together and should be loaded last (using defer).
 
-// --- Global DOM Element Variables ---
-// (Declared globally within gallery.js and ui.js, but assigned here)
+// Assign variables that are used across different modules.
+// Note: In a module system, these would be imported/exported.
+// Here, they rely on being assigned before functions in other files need them.
+let workGalleryElement = null;
+let uploadForm = null;
+let authorNameInput = null;
+let scorecardImageInput = null;
+let comicImageInput = null;
+let currentHabitsInput = null;
+let reflectionInput = null;
+let uploadStatusElement = null;
+let modalElement = null;
+let modalCloseButton = null;
+let modalAuthor = null;
+let modalCurrentHabits = null;
+let modalReflection = null;
+let modalScorecardImage = null;
+let modalComicImage = null;
+let mobileMenuButtonElement = null;
+let mobileMenuElement = null;
+let interactiveCatContainerElement = null;
+let interactiveCatImgElement = null;
+let particlesJsElement = null;
+let heroSlideshowElement = null;
 
+
+// Wait for the DOM to be fully loaded before running setup
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("DOM fully loaded and parsed. Initializing page...");
+    console.log("DOM fully loaded and parsed. Initializing application...");
 
-    // --- Assign DOM Elements to Module Variables ---
-    // Gallery elements
-    workGalleryElement = document.getElementById('work-gallery');
-    galleryPlaceholder = document.getElementById('gallery-placeholder'); // Can be null if dynamic
-    uploadForm = document.getElementById('upload-form');
-    workImageInput = document.getElementById('work-image');
-    workDescriptionInput = document.getElementById('work-description');
-    uploadStatusElement = document.getElementById('upload-status');
+    // --- Assign DOM Elements ---
+    // Use a helper function for robustness
+    const getElement = (id) => {
+        const el = document.getElementById(id);
+        if (!el) console.warn(`Element with ID '${id}' not found.`);
+        return el;
+    };
 
-    // UI elements
-    mobileMenuButtonElement = document.getElementById('mobile-menu-button');
-    mobileMenuElement = document.getElementById('mobile-menu');
-    interactiveCatContainerElement = document.getElementById('interactive-cat-container');
-    interactiveCatImgElement = document.getElementById('interactive-cat-img');
-    particlesJsElement = document.getElementById('particles-js');
+    // Gallery & Form Elements (for gallery.js)
+    workGalleryElement = getElement('work-gallery');
+    uploadForm = getElement('upload-form');
+    authorNameInput = getElement('author-name');
+    scorecardImageInput = getElement('scorecard-image');
+    comicImageInput = getElement('comic-image');
+    currentHabitsInput = getElement('current-habits');
+    reflectionInput = getElement('reflection');
+    uploadStatusElement = getElement('upload-status');
 
-    // Check if critical elements were found
-    if (!workGalleryElement || !uploadForm || !workImageInput || !workDescriptionInput || !uploadStatusElement) {
-        console.error("一個或多個主要應用程式 DOM 元素未找到。頁面功能可能受影響。");
-        // Display a user-friendly error message?
-        const body = document.querySelector('body');
-        if (body && !document.getElementById('init-error-msg')) { // Prevent duplicate messages
-            const errorDiv = document.createElement('div');
-            errorDiv.id = 'init-error-msg';
-            errorDiv.textContent = '頁面部分元件載入失敗，部分功能可能無法使用。請嘗試重新整理頁面。';
-            errorDiv.style.color = 'white';
-            errorDiv.style.backgroundColor = 'red';
-            errorDiv.style.padding = '1em';
-            errorDiv.style.textAlign = 'center';
-            errorDiv.style.position = 'fixed';
-            errorDiv.style.top = '0';
-            errorDiv.style.left = '0';
-            errorDiv.style.width = '100%';
-            errorDiv.style.zIndex = '1000';
-            body.prepend(errorDiv); // Add to the top
-        }
-        // Decide whether to proceed or stop initialization
-        // return; // Uncomment to stop if critical elements are missing
-    }
+    // Modal Elements (for gallery.js)
+    modalElement = getElement('work-modal');
+    modalCloseButton = modalElement?.querySelector('.modal-close'); // Query within modal
+    modalAuthor = getElement('modal-author');
+    modalCurrentHabits = getElement('modal-current-habits');
+    modalReflection = getElement('modal-reflection');
+    modalScorecardImage = getElement('modal-scorecard-image');
+    modalComicImage = getElement('modal-comic-image');
+
+    // UI Elements (for ui.js)
+    mobileMenuButtonElement = getElement('mobile-menu-button');
+    mobileMenuElement = getElement('mobile-menu');
+    interactiveCatContainerElement = getElement('interactive-cat-container');
+    interactiveCatImgElement = getElement('interactive-cat-img');
+    particlesJsElement = getElement('particles-js');
+    heroSlideshowElement = getElement('hero-slideshow');
+
+    // --- Check if critical elements are missing ---
+     if (!workGalleryElement || !uploadForm || !modalElement || !heroSlideshowElement) {
+         console.error("Core layout elements missing (gallery, form, modal, slideshow). Functionality will be limited.");
+         // Display a more prominent error?
+         // return; // Optionally stop execution
+     }
+
 
     // --- Initialize Page Components ---
-    function initializePage() {
+    // Use a structured approach, ensuring dependencies are met
+    async function initializePage() {
         console.log("main.js: Initializing page components...");
 
-        // 1. Load gallery content (from gallery.js)
-        // Make sure loadAndRenderWorks is available (script loaded)
-        if (typeof loadAndRenderWorks === 'function') {
-            loadAndRenderWorks();
-        } else {
-            console.error("loadAndRenderWorks function not found.");
-        }
+        // Initialize non-data-dependent UI first
+        if (typeof initParticles === 'function') initParticles(); else console.error("initParticles not found.");
+        if (typeof startCatAnimation === 'function' && interactiveCatImgElement) startCatAnimation(catNormalSpeed); else console.error("startCatAnimation not found or cat image missing.");
+        if (typeof startKeepAliveTimer === 'function') startKeepAliveTimer(); else console.error("startKeepAliveTimer not found.");
 
-        // 2. Initialize interactive cat (from ui.js)
-        if (interactiveCatImgElement) {
-            if (typeof handleImageError === 'function') { // Check if util function exists
-                 interactiveCatImgElement.onerror = function() { handleImageError(this, 'Cat Error'); };
-            }
-            if (!interactiveCatImgElement.getAttribute('src')) {
-                interactiveCatImgElement.src = catImageUrls[0] || ''; // Use constant from ui.js? (Need module system or global)
-            }
-            if (typeof startCatAnimation === 'function') { // Check if ui function exists
-                startCatAnimation(catNormalSpeed); // Use constants from ui.js scope ideally
-            } else {
-                 console.error("startCatAnimation function not found.");
-            }
-        } else {
-            console.warn("互動小貓圖片元素未找到。");
-        }
-
-        // 3. Initialize particles (from ui.js)
-        if (particlesJsElement) {
-             if (typeof initParticles === 'function') { // Check if ui function exists
-                initParticles();
-             } else {
-                  console.error("initParticles function not found.");
+         // Initialize gallery (fetches data)
+         if (typeof loadAndRenderWorks === 'function') {
+             try {
+                 await loadAndRenderWorks(); // Wait for gallery data to load
+                 console.log("Gallery loaded. Initializing slideshow...");
+                 // Initialize slideshow (depends on gallery data via currentWorksData)
+                 if (typeof initializeSlideshow === 'function') {
+                    initializeSlideshow();
+                 } else {
+                    console.error("initializeSlideshow not found.");
+                 }
+             } catch(galleryError) {
+                 console.error("Error loading gallery, slideshow might not initialize correctly:", galleryError);
+                 // Still try to initialize slideshow (it might handle empty data)
+                  if (typeof initializeSlideshow === 'function') initializeSlideshow();
              }
-        } else {
-            console.warn("Particles.js 容器元素未找到。");
-        }
-
-        // 4. Start keep-alive timer (from keep-alive.js)
-         if (typeof startKeepAliveTimer === 'function') { // Check if keep-alive function exists
-            startKeepAliveTimer(); // Uses default 10 minute interval
          } else {
-             console.error("startKeepAliveTimer function not found.");
+             console.error("loadAndRenderWorks function not found.");
+             // If gallery can't load, should slideshow still try? Maybe not.
+              if (typeof initializeSlideshow === 'function') initializeSlideshow(); // Try anyway, might show placeholder
          }
 
-        console.log("main.js: Page initialization complete.");
+         // Set up error handling for static images after DOM is ready
+         document.querySelectorAll('img').forEach(img => {
+              // Add handler only if it doesn't have one and the function exists
+              if (!img.onerror && typeof handleImageError === 'function') {
+                  // Avoid overriding specific handlers if already set (like cat maybe)
+                  if(img.id !== 'interactive-cat-img') { // Simple check
+                      img.onerror = function() { handleImageError(this, '圖片載入失敗'); };
+                  }
+              }
+         });
+
+
+        console.log("main.js: Page initialization sequence complete.");
     }
 
-    initializePage(); // Run the initialization sequence
+    initializePage(); // Start the process
+
 
     // --- Bind Event Listeners ---
     console.log("main.js: Binding event listeners...");
 
-    // Upload Form Submission (uses function from gallery.js)
-    if (uploadForm) {
-         if (typeof handleWorkUpload === 'function') {
-             uploadForm.addEventListener('submit', handleWorkUpload);
-             console.log("已綁定上傳表單的 submit 事件。");
-         } else {
-              console.error("handleWorkUpload function not found for form listener.");
-         }
+    // Upload Form
+    if (uploadForm && typeof handleWorkUpload === 'function') {
+        uploadForm.addEventListener('submit', handleWorkUpload);
+        console.log("Submit listener bound for upload form.");
+    } else {
+         console.warn("Upload form or handler not found. Uploads disabled.");
     }
 
-    // Mobile Menu Toggle Button (uses function from ui.js)
-    if (mobileMenuButtonElement) {
-        if (typeof toggleMobileMenu === 'function') {
-            mobileMenuButtonElement.addEventListener('click', toggleMobileMenu);
-            console.log("已綁定行動選單按鈕的 click 事件。");
+    // Mobile Menu Button
+    if (mobileMenuButtonElement && typeof toggleMobileMenu === 'function') {
+        mobileMenuButtonElement.addEventListener('click', toggleMobileMenu);
+         console.log("Click listener bound for mobile menu button.");
+    } else {
+         console.warn("Mobile menu button or handler not found.");
+    }
+
+    // Interactive Cat
+    if (interactiveCatContainerElement && typeof handleCatClick === 'function') {
+        interactiveCatContainerElement.addEventListener('click', handleCatClick);
+        console.log("Click listener bound for interactive cat.");
+    } else {
+         console.warn("Interactive cat container or handler not found.");
+    }
+
+    // Smooth Scrolling (Delegate from body)
+    if (typeof handleSmoothScroll === 'function') {
+        document.body.addEventListener('click', (event) => {
+            // Check if the click originated from within an appropriate anchor
+            if (event.target.closest('a[href^="#"]')) {
+                handleSmoothScroll(event);
+            }
+        });
+        console.log("Click listener bound for smooth scrolling (delegated).");
+    } else {
+        console.warn("handleSmoothScroll function not found.");
+    }
+
+    // Modal Close Mechanisms
+    if (modalElement && typeof closeWorkModal === 'function') {
+        // Close button
+        if (modalCloseButton) {
+            modalCloseButton.addEventListener('click', closeWorkModal);
+            console.log("Click listener bound for modal close button.");
         } else {
-             console.error("toggleMobileMenu function not found for button listener.");
+             console.warn("Modal close button element not found.");
         }
+        // Click outside modal content
+        modalElement.addEventListener('click', (event) => {
+            if (event.target === modalElement) { // Clicked on the background overlay
+                closeWorkModal();
+            }
+        });
+         console.log("Click listener bound for modal background.");
+         // Close on Escape key
+         window.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && modalElement.style.display === 'block') {
+                closeWorkModal();
+            }
+        });
+         console.log("Keydown listener bound for modal Escape key.");
+
+    } else {
+        console.warn("Modal element or close function not found. Modal interactions disabled.");
     }
 
-    // Interactive Cat Click (uses function from ui.js)
-    if (interactiveCatContainerElement) {
-         if (typeof handleCatClick === 'function') {
-            interactiveCatContainerElement.addEventListener('click', handleCatClick);
-            console.log("已綁定互動小貓容器的 click 事件。");
-         } else {
-              console.error("handleCatClick function not found for cat listener.");
-         }
-    }
-
-    // Smooth Scrolling (uses function from ui.js)
-    // Listen on a parent element or body for efficiency if many links
-    document.body.addEventListener('click', (event) => {
-         if (event.target.closest('a[href^="#"]')) { // Check if click was on or inside an anchor link
-             if (typeof handleSmoothScroll === 'function') {
-                 handleSmoothScroll(event);
-             } else {
-                  console.error("handleSmoothScroll function not found.");
-             }
-         }
-    });
-    console.log("已綁定平滑滾動事件 (監聽 body)。");
-
-
-    // General Image Error Handling for static images (uses function from utils.js)
-    const staticImages = document.querySelectorAll('img'); // Select all images
-     staticImages.forEach(img => {
-         // Add error handler only if one doesn't already exist (e.g., from gallery render)
-         if (!img.onerror && typeof handleImageError === 'function') {
-             // Don't necessarily overwrite cat image handler if already set
-             if(img.id !== 'interactive-cat-img') {
-                 img.onerror = function() { handleImageError(this, '圖片載入失敗'); };
-             }
-         }
-     });
-     console.log("已為頁面圖片嘗試綁定通用 error 事件處理。");
-
+    console.log("main.js: Event listeners bound.");
 
 }); // End of DOMContentLoaded listener
