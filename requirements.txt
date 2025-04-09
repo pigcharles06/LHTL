@@ -1,0 +1,3 @@
+FlaskFlask
+gunicorn
+Flask-CORS
