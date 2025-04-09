@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>學習活動 - 作品分享</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* FontFace, Lucide */
+      @font-face {
+        font-family: 'LucideIcons';
+        src: url(https://cdn.jsdelivr.net/npm/lucide-static@latest/font/Lucide.ttf) format('truetype');
+      }
+      .lucide { font-family: 'LucideIcons'; font-size: 1.25rem; line-height: 1; }
+      /* FadeIn Animation */
+      .fade-in { animation: fadeIn 0.8s ease-in-out; }
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+      /* --- Particles.js Container Style --- */
+      #particles-js {
+        position: fixed; width: 100%; height: 100%;
+        top: 0; left: 0; z-index: -1; /* Behind content */
+        background-color: transparent;
+      }
+
+      /* Interactive Cat Styles */
+      #interactive-cat-container {
+        position: fixed; bottom: 20px; right: 20px;
+        width: 80px; height: 80px;
+        cursor: pointer; user-select: none; z-index: 40;
+        background-color: rgba(200, 200, 200, 0.1); border-radius: 50%;
+      }
+      #interactive-cat-img {
+        width: 100%; height: 100%; object-fit: contain;
+        -webkit-user-drag: none; user-select: none; -moz-user-select: none;
+        -webkit-user-select: none; -ms-user-select: none;
+      }
+
+      /* Custom styles for form elements if needed */
+      #upload-form textarea { min-height: 80px; }
+      #upload-form input[type="file"] {
+          /* Basic styling for file input */
+          border: 1px solid #E5E7EB; border-radius: 0.5rem; padding: 0.5rem;
+      }
+      /* Style for the gallery cards */
+      .work-card {
+          background-color: white;
+          border-radius: 1rem; /* rounded-xl */
+          box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); /* shadow-lg */
+          overflow: hidden;
+          transition: transform 0.3s ease;
+      }
+      .work-card:hover {
+          transform: scale(1.03);
+      }
+      .work-card img {
+          width: 100%;
+          height: 200px; /* Fixed height for consistency */
+          object-fit: cover;
+      }
+      .work-card p {
+          padding: 1rem; /* p-4 */
+          font-size: 0.875rem; /* text-sm */
+          color: #4B5563; /* text-gray-600 */
+          /* Allow line breaks */
+          white-space: pre-wrap;
+          word-wrap: break-word;
+      }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        // Tailwind Config (Using initial colors)
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        primary: '#F8BBD0',   // 淡粉色
+                        secondary: '#FFF8E1', // 柔和米色 (主背景)
+                        accent: '#E91E63',   // 亮粉色
+                        text: '#424242',     // 深灰色文字
+                        gray: { 100: '#F3F4F6', 200: '#E5E7EB' }
+                    },
+                    borderRadius: { 'xl': '1rem', '2xl': '1.5rem' }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-sans bg-secondary text-text antialiased">
+
+    <div id="particles-js"></div>
+
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#home" class="text-2xl font-bold text-accent hover:text-primary transition duration-300">活動 Logo</a>
+            <div class="hidden md:flex space-x-6">
+                <a href="#home" class="text-gray-600 hover:text-accent transition duration-300">活動首頁</a>
+                <a href="#student-works" class="text-gray-600 hover:text-accent transition duration-300">作品展示/上傳</a>
+                </div>
+            <button id="mobile-menu-button" class="md:hidden lucide text-gray-600 hover:text-accent transition duration-300">&#xe9af;</button>
+        </nav>
+        <div id="mobile-menu" class="md:hidden hidden bg-white py-2">
+            <a href="#home" class="block px-6 py-2 text-gray-600 hover:bg-gray-100 hover:text-accent">活動首頁</a>
+            <a href="#student-works" class="block px-6 py-2 text-gray-600 hover:bg-gray-100 hover:text-accent">作品展示/上傳</a>
+        </div>
+    </header>
+
+    <section id="home" class="container mx-auto px-6 py-16 md:py-24 fade-in">
+         <div class="flex flex-col md:flex-row items-center gap-12">
+            <div class="md:w-1/2 text-center md:text-left">
+                 <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4 leading-tight">分享你的學習成果！</h1>
+                <p class="text-lg text-gray-600 mb-8">
+                    歡迎參加本次學習活動！在這裡，你可以上傳並展示你的精彩作品，與大家一同交流成長。
+                </p>
+                 <a href="#student-works" class="inline-block bg-accent text-white font-semibold px-8 py-3 rounded-xl hover:bg-pink-700 transition duration-300 shadow-lg">
+                    前往作品區
+                </a>
+            </div>
+            <div class="md:w-1/2 w-full mt-8 md:mt-0">
+                <img src="https://placehold.co/600x400/FFF8E1/E91E63?text=學習活動主視覺" alt="學習活動主視覺" class="rounded-2xl shadow-xl w-full h-auto object-cover">
+            </div>
+        </div>
+    </section>
+
+    <section id="student-works" class="py-16 md:py-24 border-t border-gray-200">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-12">學生作品展示與上傳</h2>
+
+            <div class="max-w-2xl mx-auto bg-white p-6 md:p-8 rounded-xl shadow-lg mb-16">
+                <h3 class="text-2xl font-semibold text-gray-700 mb-6 text-center">上傳我的作品</h3>
+                 <p class="text-center text-sm text-red-600 mb-4">**重要提示：** 由於沒有後端伺服器，您上傳的作品僅在本次瀏覽期間顯示，重新整理頁面後將會消失。</p>
+                <form id="upload-form" class="space-y-4">
+                    <div>
+                        <label for="work-image" class="block text-sm font-medium text-gray-700 mb-1">選擇圖片檔案：</label>
+                        <input type="file" id="work-image" name="work-image" accept="image/*" required
+                               class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-pink-50 file:text-accent hover:file:bg-pink-100 transition duration-150 cursor-pointer">
+                         <p class="mt-1 text-xs text-gray-500">請選擇 JPG, PNG, GIF 等圖片格式。</p>
+                    </div>
+                    <div>
+                        <label for="work-description" class="block text-sm font-medium text-gray-700 mb-1">作品介紹：</label>
+                        <textarea id="work-description" name="work-description" rows="3" required
+                                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent shadow-sm text-sm"
+                                  placeholder="簡單介紹一下你的作品吧..."></textarea>
+                    </div>
+                    <div>
+                        <button type="submit"
+                                class="w-full bg-accent text-white font-semibold px-6 py-3 rounded-xl hover:bg-pink-700 transition duration-300 shadow-md">
+                            確認上傳
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+             <hr class="my-12 border-gray-300">
+
+            <h3 class="text-2xl font-semibold text-gray-700 mb-6 text-center">作品畫廊</h3>
+            <div id="work-gallery" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                <p id="gallery-placeholder" class="text-center text-gray-500 col-span-full">目前還沒有人上傳作品喔！</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-800 text-gray-300 py-10 mt-16">
+         <div class="container mx-auto px-6 text-center"><p>&copy; 2025 學習活動主辦單位. 保留所有權利.</p><div class="flex justify-center space-x-4 mt-4"><a href="#" class="lucide hover:text-primary transition duration-300">&#xea7a;</a> <a href="#" class="lucide hover:text-primary transition duration-300">&#xea4c;</a> <a href="#" class="lucide hover:text-primary transition duration-300">&#xeac5;</a></div></div>
+    </footer>
+
+    <div id="interactive-cat-container">
+        <img id="interactive-cat-img" src="Box.png" alt="互動小貓"> </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+    <script>
+        // --- Global Data & Config ---
+        // const products = []; // REMOVED
+        const catImageUrls = [ 'Box.png', 'Box2.png', 'Box3.png' ];
+        const catNormalSpeed = 500;
+        const catFastSpeed = 150;
+
+        // --- Global State Variables ---
+        let catImageIndex = 0;
+        let catAnimationIntervalId = null;
+        let isCatFast = false;
+        let catFastTimeoutId = null;
+        // let sliderImages = []; // REMOVED
+        // let currentSlideIndex = 0; // REMOVED
+        // let sliderInterval; // REMOVED
+        let uploadedWorks = []; // Array to store uploaded works (session only)
+
+        // --- Global DOM Element Variables ---
+        // Initialized in DOMContentLoaded
+        let workGalleryElement = null;
+        let galleryPlaceholder = null;
+        let uploadForm = null;
+        let workImageInput = null;
+        let workDescriptionInput = null;
+        // ... other elements like cat, particles, mobile menu ...
+        let mobileMenuButtonElement = null;
+        let mobileMenuElement = null;
+        let interactiveCatContainerElement = null;
+        let interactiveCatImgElement = null;
+        let particlesJsElement = null;
+
+
+        // --- Global Utility Functions ---
+        function handleImageError(imgElement, errorText = '圖片載入失敗') {
+            console.error(`圖片載入失敗: ${imgElement.src}, Alt: ${imgElement.alt}`);
+            imgElement.onerror = null;
+            if (!imgElement.src.includes('placehold.co')) {
+                 // Use a smaller placeholder for gallery/cat
+                 const size = imgElement.id === 'interactive-cat-img' ? 80 : 200;
+                 imgElement.src = `https://placehold.co/${size}x${size}/cccccc/ffffff?text=${encodeURIComponent(errorText)}`;
+            }
+             imgElement.alt = errorText;
+        }
+
+        // --- Global Core Functions ---
+
+        // Function to render uploaded works
+        function renderWorks() {
+            if (!workGalleryElement) { console.error("renderWorks: Gallery element not found"); return; }
+            workGalleryElement.innerHTML = ''; // Clear current gallery
+
+            if (uploadedWorks.length === 0) {
+                // Show placeholder if no works yet
+                workGalleryElement.innerHTML = '<p id="gallery-placeholder" class="text-center text-gray-500 col-span-full">目前還沒有人上傳作品喔！</p>';
+                return;
+            }
+
+            uploadedWorks.forEach(work => {
+                const card = document.createElement('div');
+                card.className = 'work-card'; // Use new CSS class
+                card.innerHTML = `
+                    <img src="${work.imageUrl}" alt="學生作品">
+                    <p>${escapeHTML(work.description)}</p> `;
+                 // Assign onerror via JS
+                const imgElement = card.querySelector('img');
+                if (imgElement) {
+                    imgElement.onerror = function() { handleImageError(this, `作品圖片載入失敗`); };
+                }
+                workGalleryElement.appendChild(card);
+            });
+        }
+
+        // Function to handle form submission
+        function handleWorkUpload(event) {
+            event.preventDefault(); // Prevent actual form submission
+
+            if (!workImageInput || !workDescriptionInput) {
+                 console.error("Form elements not found");
+                 return;
+            }
+
+            const imageFile = workImageInput.files[0];
+            const description = workDescriptionInput.value.trim();
+
+            if (!imageFile) {
+                alert("請選擇要上傳的圖片檔案！");
+                return;
+            }
+            if (!description) {
+                alert("請輸入作品介紹！");
+                return;
+            }
+
+            // Use FileReader to read the image file
+            const reader = new FileReader();
+
+            reader.onload = function(loadEvent) {
+                const imageUrl = loadEvent.target.result; // This is the Data URL
+
+                // Create new work object
+                const newWork = {
+                    imageUrl: imageUrl,
+                    description: description
+                };
+
+                // Add to our temporary array
+                uploadedWorks.push(newWork);
+
+                // Re-render the gallery
+                renderWorks();
+
+                // Clear the form
+                if (uploadForm) uploadForm.reset();
+                 alert("作品上傳成功！");
+            }
+
+            reader.onerror = function() {
+                alert("讀取圖片檔案時發生錯誤。");
+                console.error("FileReader error:", reader.error);
+            }
+
+            // Read the file as Data URL (Base64)
+            reader.readAsDataURL(imageFile);
+        }
+
+        // Simple HTML escaping function
+        function escapeHTML(str) {
+          return str.replace(/[&<>'"]/g,
+            tag => ({
+              '&': '&amp;', '<': '&lt;', '>': '&gt;',
+              "'": '&#39;', '"': '&quot;'
+            }[tag] || tag)
+          );
+        }
+
+
+        // --- Removed Slider Functions ---
+        // function createHeroSlider(...) {}
+        // function showSlide(...) {}
+        // function startSliderShow(...) {}
+
+        // --- Removed Modal Functions ---
+        // function openModal(...) {}
+        // function closeModal(...) {}
+
+        // --- Existing Functions (Cat, Mobile Menu, Particles) ---
+        function toggleMobileMenu(mobileMenuElem) { if (mobileMenuElem) mobileMenuElem.classList.toggle('hidden'); }
+        function stopCatAnimation() { /* ... */ }
+        function startCatAnimation(speed, catImgElem) { /* ... */ }
+        function handleCatClick(catContainerElem, catImgElem) { /* ... */ }
+        function initParticles(particlesElem) { /* ... (using previous config) ... */
+            if (typeof particlesJS === 'undefined') { console.error('particles.js library not loaded.'); return; }
+             if (particlesElem) {
+                 particlesJS("particles-js", { /* New particles config */
+                   "particles": { "number": { "value": 80, "density": { "enable": true, "value_area": 800 } }, "color": { "value": "#888888" }, "shape": { "type": "circle", "stroke": { "width": 0, "color": "#000000" }, "polygon": { "nb_sides": 5 }, "image": { "src": "img/github.svg", "width": 100, "height": 100 } }, "opacity": { "value": 0.5, "random": false, "anim": { "enable": false, "speed": 1, "opacity_min": 0.1, "sync": false } }, "size": { "value": 3, "random": true, "anim": { "enable": false, "speed": 40, "size_min": 0.1, "sync": false } }, "line_linked": { "enable": true, "distance": 150, "color": "#888888", "opacity": 0.4, "width": 1 }, "move": { "enable": true, "speed": 6, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false, "attract": { "enable": false, "rotateX": 600, "rotateY": 1200 } } }, "interactivity": { "detect_on": "canvas", "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" }, "resize": true }, "modes": { "grab": { "distance": 400, "line_linked": { "opacity": 1 } }, "bubble": { "distance": 400, "size": 40, "duration": 2, "opacity": 8, "speed": 3 }, "repulse": { "distance": 200, "duration": 0.4 }, "push": { "particles_nb": 4 }, "remove": { "particles_nb": 2 } } }, "retina_detect": true
+                 });
+             } else { console.error("Particles.js container element missing"); }
+        }
+
+        // --- Main Execution on DOMContentLoaded ---
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("DOMContentLoaded event fired.");
+
+            // --- Assign DOM Elements to Global Variables ---
+            workGalleryElement = document.getElementById('work-gallery');
+            galleryPlaceholder = document.getElementById('gallery-placeholder'); // Optional
+            uploadForm = document.getElementById('upload-form');
+            workImageInput = document.getElementById('work-image');
+            workDescriptionInput = document.getElementById('work-description');
+            mobileMenuButtonElement = document.getElementById('mobile-menu-button');
+            mobileMenuElement = document.getElementById('mobile-menu');
+            interactiveCatContainerElement = document.getElementById('interactive-cat-container');
+            interactiveCatImgElement = document.getElementById('interactive-cat-img');
+            particlesJsElement = document.getElementById('particles-js');
+            // Removed modal and slider elements
+
+            // --- Initialize Page ---
+            function initializePage() {
+                console.log("initializePage: 函數開始執行");
+                if(workGalleryElement) renderWorks(); // Initial render of gallery
+                if(interactiveCatImgElement) startCatAnimation(catNormalSpeed, interactiveCatImgElement);
+                if(particlesJsElement) initParticles(particlesJsElement);
+                console.log("initializePage: 函數執行完畢");
+            }
+
+            initializePage(); // Run Initialization
+
+            // --- Bind Event Listeners ---
+            if (uploadForm) {
+                uploadForm.addEventListener('submit', handleWorkUpload);
+            } else { console.error("Listener Bind Error: upload-form"); }
+
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                 anchor.addEventListener('click', function (e) {
+                     e.preventDefault();
+                     const targetId = this.getAttribute('href');
+                     const targetElement = document.querySelector(targetId);
+                     if(targetElement) {
+                         targetElement.scrollIntoView({ behavior: 'smooth' });
+                         if (mobileMenuElement && mobileMenuElement.contains(this)) toggleMobileMenu(mobileMenuElement);
+                     }
+                 });
+            });
+            if (mobileMenuButtonElement) mobileMenuButtonElement.addEventListener('click', () => toggleMobileMenu(mobileMenuElement)); else console.error("Listener Bind Error: mobile-menu-button");
+            if (interactiveCatContainerElement) interactiveCatContainerElement.addEventListener('click', () => handleCatClick(interactiveCatContainerElement, interactiveCatImgElement)); else console.error("Listener Bind Error: interactive-cat-container");
+
+             // Assign onerror for static cat image
+             if(interactiveCatImgElement){
+                 interactiveCatImgElement.onerror = function() { handleImageError(this, 'Cat Error'); };
+                 if (!interactiveCatImgElement.getAttribute('src') || interactiveCatImgElement.src.includes('placehold.co')) {
+                    interactiveCatImgElement.src = catImageUrls[0];
+                 }
+             }
+
+        }); // End of DOMContentLoaded listener
+
+    </script>
+</body>
+</html>
