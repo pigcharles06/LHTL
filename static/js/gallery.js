@@ -99,6 +99,11 @@ async function loadAndRenderWorks() {
 
         const works = await response.json();
         currentWorksData = works; // Store for modal use
+
+        // !!! *** 請在這裡加入下面這行 *** !!!
+        console.log("Data received from /works:", JSON.stringify(currentWorksData));
+        // !!! *** 請在這裡加入上面這行 *** !!!
+        
         console.log("Received works data:", currentWorksData);
 
         workGalleryElement.innerHTML = ''; // Clear loading/placeholder
