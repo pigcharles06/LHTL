@@ -1,0 +1,132 @@
+/* FontFace, Lucide */
+@font-face {
+    font-family: 'LucideIcons';
+    /* Ensure the path is correct relative to your deployment or use the full CDN URL */
+    src: url(https://cdn.jsdelivr.net/npm/lucide-static@latest/font/Lucide.ttf) format('truetype');
+  }
+  
+  .lucide {
+    font-family: 'LucideIcons';
+    font-size: 1.25rem; /* text-xl equivalent */
+    line-height: 1;
+    /* Consider adding display: inline-block or vertical-align if needed */
+  }
+  
+  /* FadeIn Animation */
+  .fade-in {
+    animation: fadeIn 0.8s ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* --- Particles.js Container Style --- */
+  #particles-js {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1; /* Behind content */
+    background-color: transparent; /* Or your desired background */
+  }
+  
+  /* Interactive Cat Styles */
+  #interactive-cat-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 80px;
+    height: 80px;
+    cursor: pointer;
+    user-select: none;
+    z-index: 40;
+    background-color: rgba(200, 200, 200, 0.1);
+    border-radius: 50%;
+  }
+  
+  #interactive-cat-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    /* Prevent dragging */
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+  }
+  
+  /* Custom styles for form elements */
+  #upload-form textarea {
+    min-height: 80px;
+  }
+  
+  /* Tailwind overrides or custom styling for file input if needed */
+  /* Example: Adding focus styles if Tailwind's aren't enough */
+  #upload-form input[type="file"]:focus-visible {
+      outline: 2px solid #E91E63; /* Example focus ring using accent color */
+      outline-offset: 2px;
+  }
+  
+  
+  /* Style for the gallery cards */
+  .work-card {
+    background-color: white;
+    border-radius: 1rem; /* rounded-xl */
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); /* shadow-lg */
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    display: flex; /* Use flexbox for better control */
+    flex-direction: column; /* Stack image and text vertically */
+  }
+  
+  .work-card:hover {
+    transform: scale(1.03);
+  }
+  
+  .work-card img {
+    width: 100%;
+    height: 200px; /* Fixed height for consistency */
+    object-fit: cover; /* Cover the area, may crop */
+    flex-shrink: 0; /* Prevent image from shrinking */
+    background-color: #f3f4f6; /* Light gray background for loading/error state */
+  }
+  
+  .work-card p {
+    padding: 1rem; /* p-4 */
+    font-size: 0.875rem; /* text-sm */
+    color: #4B5563; /* text-gray-600 */
+    /* Allow line breaks and wrap long words */
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    flex-grow: 1; /* Allow text block to grow */
+    margin: 0; /* Reset default margins */
+  }
+  
+  /* Style for submit button when disabled */
+  button:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+  
+  /* Basic body styling (can be overridden by Tailwind) */
+  body {
+      /* Tailwind classes bg-secondary text-text are applied via class attribute */
+      font-family: 'Inter', sans-serif; /* Fallback font */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* Smooth scrolling behavior */
+  html {
+    scroll-behavior: smooth;
+  }
