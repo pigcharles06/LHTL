@@ -12,7 +12,40 @@
     <link rel="stylesheet" href="/static/style.css">
 
     <script>
-        tailwind.config = { /* ... (keep your existing config) ... */ }
+        // Tailwind Config - Necessary for CDN script customization
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'] // 使用 Inter 字體
+                     },
+                    colors: {
+                        primary: '#F8BBD0',   // 淡粉色 (自訂)
+                        secondary: '#FFF8E1', // 柔和米色 (自訂 - 主背景)
+                        accent: '#E91E63',   // 亮粉色 (自訂)
+                        text: '#424242',     // 深灰色 (自訂 - 主要文字)
+                        // 確保包含所有你在 class 中使用的 Tailwind 預設顏色名稱
+                        // 如果你只用了自訂色和預設的 gray，可以只保留 gray
+                        // 或者從 Tailwind 官方文件複製預設色盤如果你用到更多
+                        gray: { // 保留/擴展你需要的灰色系
+                            100: '#F3F4F6',
+                            200: '#E5E7EB',
+                            300: '#D1D5DB',
+                            500: '#6B7280',
+                            600: '#4B5563',
+                            700: '#374151',
+                            800: '#1F2937',
+                            900: '#111827' // 你原本的設定裡有到 900
+                         }
+                    },
+                    borderRadius: {
+                         'xl': '1rem',
+                         '2xl': '1.5rem'
+                     }
+                }
+            }
+            // console.log("Tailwind config applied."); // 可選：除錯用
+        }
     </script>
 
 </head>
