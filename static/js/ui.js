@@ -17,13 +17,7 @@ let slideshowImageUrls = []; // Populated by initializeSlideshow
 
 // --- DOM Element References (initialized in main.js) ---
 // These will be assigned in main.js after DOMContentLoaded
-let mobileMenuButtonElement = null;
-let mobileMenuElement = null;
-let interactiveCatContainerElement = null;
-let interactiveCatImgElement = null;
-let particlesJsElement = null;
-let heroSlideshowElement = null;
-let slideshowPlaceholder = null; // Placeholder div inside slideshow container
+
 
 // --- Mobile Menu ---
 /**

@@ -7,21 +7,7 @@ const MAX_AUTHOR_LENGTH = 50;
 
 // --- DOM Element References (initialized in main.js) ---
 // These will be assigned in main.js after DOMContentLoaded
-let workGalleryElement = null;
-let uploadForm = null;
-let authorNameInput = null;
-let scorecardImageInput = null;
-let comicImageInput = null;
-let currentHabitsInput = null;
-let reflectionInput = null;
-let uploadStatusElement = null;
-let modalElement = null;
-let modalCloseButton = null;
-let modalAuthor = null;
-let modalCurrentHabits = null;
-let modalReflection = null;
-let modalScorecardImage = null;
-let modalComicImage = null;
+
 
 // --- State ---
 // Store fetched works data to populate modal without refetching
